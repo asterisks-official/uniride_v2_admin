@@ -53,7 +53,23 @@ token arrives: add `.npmrc` reading it from env, install
 `@hugeicons-pro/core-stroke-rounded`, change the import, run
 `npx tsc --noEmit` to catch any name that differs between the sets.
 
-### D2 · No shared `DataTable` yet
+### D2 · shadcn primitives are generated React-19 style, on a React-18 project
+
+`Input` was a plain function component. On React 19 a `ref` arrives as an
+ordinary prop and that is fine; on React 18 it is silently dropped. So
+`{...register('email')}` attached nothing, the login form read every field as
+`undefined`, and zod rejected valid input with "Invalid input" — with no warning
+from typecheck, lint or build.
+
+Fixed on `Input` (the only one a form spreads `register()` onto today). Every
+other primitive in `components/ui/` is also a plain function: they wrap Base UI
+components, which handle their own refs, so nothing is broken right now. But any
+new form control needs `forwardRef` adding before `register()` is spread onto it.
+
+Either upgrade to React 19 so the generated style is correct, or add `forwardRef`
+as you touch each one.
+
+### D3 · No shared `DataTable` yet
 
 The pilot renders `components/ui/table` directly with a `useTableParams` hook for
 URL state. That was the right call for one feature — a generic DataTable
@@ -61,25 +77,29 @@ abstracted from a single caller usually fits nothing else. Build it when the
 second table (Users) lands and the real shared surface is visible: server-side
 sort and column filtering are not exercised by the verification queue.
 
-### D3 · `@tanstack/react-table` installed but unused
+### D4 · `@tanstack/react-table` installed but unused
 
 It came with the scaffold. Either it becomes the basis of D2 or it should be
 removed.
 
-### D4 · Six sidebar links still 404
+### D5 · Six sidebar links still 404
 
 `/reports`, `/users`, `/rides`, `/config`, `/audit-log` have nav entries and
 permissions but no pages. Middleware protects them; they just do not exist yet.
 Consider hiding entries whose feature is unbuilt, or shipping a placeholder.
 
-### D5 · No test suite
+### D6 · No test suite
 
 There is no test runner in this project at all. The pilot's `utils.ts`
 (`attemptsLeft`, `isFinalRejection`) and `server/api-allowlist.ts` (`isAllowed`)
 are pure functions guarding real consequences — a permanent ban and the request
 boundary respectively — and are the obvious first things to cover.
 
-### D6 · Document images bypass the Next image optimizer
+Raised in priority by D2: typecheck, lint and build all passed on a login form
+that could not be submitted. Only rendering it would have caught that, and
+nothing in this project renders anything.
+
+### D7 · Document images bypass the Next image optimizer
 
 `unoptimized` is set on identity documents deliberately: routing private licence
 and student-ID photos through this server's optimizer would cache them on the
