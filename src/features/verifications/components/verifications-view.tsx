@@ -25,7 +25,11 @@ import {
 import { useTableParams } from '@/hooks/use-table-params';
 import { cn } from '@/lib/utils';
 
-import { useDecideVerification, useVerifications } from '../hooks/use-verifications';
+import {
+  useDecideVerification,
+  useUnblockRider,
+  useVerifications,
+} from '../hooks/use-verifications';
 import { RejectDialog } from '../modals/reject-dialog';
 import { attemptsLeft, formatDate, vehicleLabel } from '../utils';
 
@@ -55,6 +59,7 @@ export function VerificationsView() {
   const query = { status, page, limit: 20 };
   const { data, isLoading, isError, refetch } = useVerifications(query);
   const decide = useDecideVerification();
+  const unblock = useUnblockRider();
 
   function open(verification: Verification) {
     setSelected(verification);
@@ -230,7 +235,13 @@ export function VerificationsView() {
         onOpenChange={setSheetOpen}
         onApprove={approve}
         onReject={() => setRejectOpen(true)}
-        isPending={decide.isPending}
+        onUnblock={() => {
+          if (!selected) return;
+          unblock.mutate(selected.userId, {
+            onSuccess: () => setSheetOpen(false),
+          });
+        }}
+        isPending={decide.isPending || unblock.isPending}
       />
 
       <RejectDialog

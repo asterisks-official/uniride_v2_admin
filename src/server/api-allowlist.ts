@@ -31,6 +31,7 @@ const RULES: readonly AllowRule[] = [
   // ── Admin: rider verification ──────────────────────────────────────────────
   { method: 'GET', pattern: 'admin/riders/pending' },
   { method: 'PATCH', pattern: 'admin/riders/:userId/verify' },
+  { method: 'PATCH', pattern: 'admin/riders/:userId/unblock' },
 
   // ── Admin: users ───────────────────────────────────────────────────────────
   { method: 'GET', pattern: 'admin/users' },

@@ -30,6 +30,7 @@ export function VerificationDetailSheet({
   onOpenChange,
   onApprove,
   onReject,
+  onUnblock,
   isPending,
 }: {
   verification: Verification | null;
@@ -37,12 +38,16 @@ export function VerificationDetailSheet({
   onOpenChange: (open: boolean) => void;
   onApprove: () => void;
   onReject: () => void;
+  onUnblock: () => void;
   isPending: boolean;
 }) {
   if (!verification) return null;
 
   const isPendingReview = verification.verificationStatus === 'PENDING';
   const left = attemptsLeft(verification);
+  // Out of attempts on a rejected application means the account is banned and
+  // its email, student ID and phone are blocklisted.
+  const isBlocked = verification.verificationStatus === 'REJECTED' && left === 0;
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -127,7 +132,27 @@ export function VerificationDetailSheet({
           </section>
         </div>
 
-        {isPendingReview ? (
+        {isBlocked ? (
+          <Can permission="verifications.decide">
+            <div className="sticky bottom-0 space-y-3 border-t bg-white py-4">
+              <p className="text-sm text-gray-600">
+                This account is blocked. Its email, student ID and phone cannot
+                register again until it is lifted.
+              </p>
+              <Button
+                variant="outline"
+                className="w-full border-red-300 text-red-700 hover:bg-red-50"
+                onClick={onUnblock}
+                disabled={isPending}
+              >
+                {isPending ? (
+                  <SpinnerIcon className="size-4 animate-spin" />
+                ) : null}
+                Unblock account
+              </Button>
+            </div>
+          </Can>
+        ) : isPendingReview ? (
           <Can permission="verifications.decide">
             <div className="sticky bottom-0 flex gap-3 border-t bg-white py-4">
               <Button

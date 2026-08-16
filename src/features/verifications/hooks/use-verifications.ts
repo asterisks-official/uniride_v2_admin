@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import {
   decideVerification,
   getVerifications,
+  unblockRider,
   verificationKeys,
   type DecideVerificationPayload,
   type VerificationsQuery,
@@ -35,5 +36,17 @@ export function useDecideVerification() {
       void queryClient.invalidateQueries({ queryKey: verificationKeys.lists() });
     },
     // Failures are toasted by the APIKit interceptor.
+  });
+}
+
+export function useUnblockRider() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (userId: string) => (await unblockRider(userId)).data.data,
+    onSuccess: () => {
+      toast.success('Account unblocked. They can apply again.');
+      void queryClient.invalidateQueries({ queryKey: verificationKeys.lists() });
+    },
   });
 }

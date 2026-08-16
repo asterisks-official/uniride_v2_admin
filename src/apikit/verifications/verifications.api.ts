@@ -23,3 +23,10 @@ export function decideVerification({
 }: DecideVerificationPayload): Promise<AxiosResponse<ApiResponse<Verification>>> {
   return apiClient.patch(`/admin/riders/${userId}/verify`, body);
 }
+
+/** Lifts a three-strike ban: clears the blocklist, un-suspends, resets strikes. */
+export function unblockRider(
+  userId: string,
+): Promise<AxiosResponse<ApiResponse<{ message: string; clearedIdentities: number }>>> {
+  return apiClient.patch(`/admin/riders/${userId}/unblock`, {});
+}
