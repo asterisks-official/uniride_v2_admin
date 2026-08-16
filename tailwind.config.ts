@@ -3,11 +3,11 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 
 const config: Config = {
   darkMode: ['class'],
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  // One glob over all of src. The scaffold listed pages/components/app only,
+  // which silently dropped every class used exclusively inside src/features —
+  // the feature folders are where most of the UI lives, so a large part of the
+  // styling was simply never emitted.
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       fontFamily: {
@@ -15,6 +15,22 @@ const config: Config = {
       },
       colors: {
         border: 'hsl(var(--border))',
+        'primary-deep': 'hsl(var(--primary-deep))',
+        'primary-wash': 'hsl(var(--primary-wash))',
+        success: {
+          DEFAULT: 'hsl(var(--success))',
+          wash: 'hsl(var(--success-wash))',
+        },
+        warning: {
+          DEFAULT: 'hsl(var(--warning))',
+          wash: 'hsl(var(--warning-wash))',
+        },
+        shell: {
+          DEFAULT: 'hsl(var(--shell))',
+          foreground: 'hsl(var(--shell-foreground))',
+          muted: 'hsl(var(--shell-muted))',
+          hover: 'hsl(var(--shell-hover))',
+        },
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
@@ -30,6 +46,7 @@ const config: Config = {
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
+          wash: 'hsl(var(--destructive-wash))',
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',

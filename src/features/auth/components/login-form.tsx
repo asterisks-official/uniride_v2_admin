@@ -61,7 +61,7 @@ export function LoginForm() {
           {...register('email')}
         />
         {errors.email ? (
-          <p className="text-sm text-red-600">{errors.email.message}</p>
+          <p className="text-[12.5px] text-destructive">{errors.email.message}</p>
         ) : null}
       </div>
 
@@ -75,14 +75,14 @@ export function LoginForm() {
           {...register('password')}
         />
         {errors.password ? (
-          <p className="text-sm text-red-600">{errors.password.message}</p>
+          <p className="text-[12.5px] text-destructive">{errors.password.message}</p>
         ) : null}
       </div>
 
       {formError ? (
         <p
           role="alert"
-          className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+          className="rounded-lg border border-destructive/30 bg-destructive-wash px-3 py-2.5 text-[13px] text-destructive"
         >
           {formError}
         </p>

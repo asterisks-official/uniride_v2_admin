@@ -77,22 +77,22 @@ export function RejectDialog({
           <div
             className={
               isFinal
-                ? 'flex gap-3 rounded-lg border border-red-300 bg-red-50 p-3'
-                : 'flex gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3'
+                ? 'flex gap-3 rounded-xl border border-destructive/35 bg-destructive-wash p-3.5'
+                : 'flex gap-3 rounded-xl border border-warning/30 bg-warning-wash p-3.5'
             }
           >
             <WarningIcon
               className={
                 isFinal
-                  ? 'mt-0.5 size-4 shrink-0 text-red-600'
-                  : 'mt-0.5 size-4 shrink-0 text-amber-600'
+                  ? 'mt-0.5 size-4 shrink-0 text-destructive'
+                  : 'mt-0.5 size-4 shrink-0 text-warning'
               }
             />
             <p
               className={
                 isFinal
-                  ? 'text-sm font-medium text-red-800'
-                  : 'text-sm text-amber-800'
+                  ? 'text-[13px] font-medium leading-relaxed text-destructive'
+                  : 'text-[13px] leading-relaxed text-foreground'
               }
             >
               {isFinal ? (
@@ -120,11 +120,11 @@ export function RejectDialog({
               autoFocus
               placeholder="e.g. The licence photo is too blurry to read the expiry date."
               aria-invalid={Boolean(errors.note)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              className="w-full rounded-lg border border-input bg-card px-3 py-2 text-[13.5px] outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
               {...register('note')}
             />
             {errors.note ? (
-              <p className="text-sm text-red-600">{errors.note.message}</p>
+              <p className="text-[12.5px] text-destructive">{errors.note.message}</p>
             ) : null}
           </div>
 
@@ -141,8 +141,8 @@ export function RejectDialog({
               type="submit"
               className={
                 isFinal
-                  ? 'bg-red-600 text-white hover:bg-red-700'
-                  : 'bg-amber-600 text-white hover:bg-amber-700'
+                  ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+                  : 'bg-warning text-white hover:bg-warning/90'
               }
               disabled={isPending}
             >

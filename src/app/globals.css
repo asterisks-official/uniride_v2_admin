@@ -3,48 +3,51 @@
 @tailwind utilities;
 
 @layer base {
+  /* UniRide "Deep Green".
+     Taken from the Flutter app's AppColors so the panel and the product read as
+     one system — the scaffold shipped with stock shadcn blue, which is why it
+     looked like a different piece of software. Values are the same hexes,
+     converted to HSL for the token pipeline. */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 150 9% 96%;      /* #F3F5F4 */
+    --foreground: 200 13% 9%;      /* #14181A */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 200 13% 9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
-  }
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --popover-foreground: 200 13% 9%;
+
+    --primary: 155 83% 26%;        /* #0B7A4B */
+    --primary-foreground: 0 0% 100%;
+    --primary-deep: 152 83% 21%;   /* #096239 — pressed / gradient end */
+    --primary-wash: 152 35% 93%;   /* #E8F4EE — tinted fill */
+
+    --secondary: 150 8% 94%;
+    --secondary-foreground: 200 13% 9%;
+    --muted: 150 8% 94%;
+    --muted-foreground: 180 5% 42%; /* #667070 */
+    --accent: 152 35% 93%;
+    --accent-foreground: 155 83% 26%;
+
+    /* Semantic, deliberately separate from the brand ramp so a green button is
+       never confused with a success state. */
+    --success: 147 70% 31%;        /* #18874A */
+    --success-wash: 147 45% 94%;
+    --warning: 26 90% 37%;         /* #B45309 */
+    --warning-wash: 34 80% 94%;
+    --destructive: 4 74% 49%;      /* #D92B20 */
+    --destructive-foreground: 0 0% 100%;
+    --destructive-wash: 4 70% 96%;
+
+    /* Chrome — the sidebar ground, near-black with the same green bias. */
+    --shell: 165 18% 9%;           /* #121917 */
+    --shell-foreground: 150 10% 88%;
+    --shell-muted: 160 8% 55%;
+    --shell-hover: 165 15% 15%;
+
+    --border: 154 11% 88%;
+    --input: 154 11% 88%;
+    --ring: 155 83% 26%;
+    --radius: 0.625rem;
   }
 }
 

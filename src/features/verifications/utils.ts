@@ -24,3 +24,28 @@ export function formatDate(iso: string): string {
 export function vehicleLabel(verification: Verification): string {
   return `${verification.vehicleMake} ${verification.vehicleModel} · ${verification.licensePlate}`;
 }
+
+/**
+ * How long this has been waiting, in the words a reviewer triages by.
+ *
+ * A queue is worked by urgency, and "4 days" answers that where a date makes
+ * you do the arithmetic yourself.
+ */
+export function waitingFor(iso: string): { label: string; days: number } {
+  const days = Math.floor(
+    (Date.now() - new Date(iso).getTime()) / 86_400_000,
+  );
+  if (days <= 0) return { label: 'Today', days: 0 };
+  if (days === 1) return { label: '1 day', days };
+  return { label: `${days} days`, days };
+}
+
+/** Initials for the avatar stand-in. */
+export function initials(name: string): string {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? '')
+    .join('');
+}
