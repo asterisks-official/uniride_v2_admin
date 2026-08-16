@@ -1,3 +1,41 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    "@typescript-eslint/no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "axios",
+            "message": "Network calls belong in src/apikit (client) or src/server (server). Import apiClient from '@/apikit/client'.",
+            "allowTypeImports": true
+          },
+          {
+            "name": "lucide-react",
+            "message": "Icons come from '@/components/icons' only."
+          },
+          {
+            "name": "@hugeicons/core-free-icons",
+            "message": "Import icons from '@/components/icons' so the set and variant stay swappable in one file.",
+            "allowTypeImports": true
+          },
+          {
+            "name": "@hugeicons/react",
+            "message": "Import icons from '@/components/icons' so the set and variant stay swappable in one file.",
+            "allowTypeImports": true
+          }
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/apikit/client.ts", "src/server/**/*.ts"],
+      "rules": { "@typescript-eslint/no-restricted-imports": "off" }
+    },
+    {
+      "files": ["src/components/icons/index.tsx"],
+      "rules": { "@typescript-eslint/no-restricted-imports": "off" }
+    }
+  ]
 }
