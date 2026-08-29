@@ -26,7 +26,7 @@ const ICONS = {
 } as const;
 
 /** Routes with no page yet — shown, but visibly not ready. */
-const UNBUILT = new Set(['reports', 'users', 'rides', 'config', 'audit-log']);
+const UNBUILT = new Set(['config', 'audit-log']);
 
 export function Sidebar() {
   const pathname = usePathname();
