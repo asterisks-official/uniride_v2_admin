@@ -44,6 +44,14 @@ const RULES: readonly AllowRule[] = [
 
   // ── Admin: rides ───────────────────────────────────────────────────────────
   { method: 'GET', pattern: 'admin/rides' },
+
+  // ── Uploads ────────────────────────────────────────────────────────────────
+  // Signs a short-lived read URL for one uploaded document. The bucket is
+  // private, so the URLs stored on an application are not fetchable and the
+  // verification queue cannot render what it exists to review without this.
+  // The backend authorises per object: an admin may read any, nobody else may
+  // read another user's.
+  { method: 'GET', pattern: 'uploads/view' },
 ] as const;
 
 /** Compiled once at module load rather than per request. */

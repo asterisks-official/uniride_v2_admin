@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { Verification } from '@/apikit/verifications';
 import { CheckIcon, CloseIcon, SpinnerIcon } from '@/components/icons';
@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 
+import { useDocumentUrl } from '../hooks/use-document-url';
 import { formatDate, initials, waitingFor } from '../utils';
 
 import { AttemptsMeter } from './attempts-meter';
@@ -279,14 +280,30 @@ function Document({
   primary = false,
 }: {
   label: string;
+  /** As stored on the application. Not fetchable on its own — see useDocumentUrl. */
   url: string | null;
   primary?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
-  // In dev the backend hands out cdn.uniride.app URLs that do not resolve, so
-  // "could not load" has to be a real state — otherwise every tile is a broken
-  // image icon and the reviewer cannot tell that from a missing document.
-  const showImage = Boolean(url) && !failed;
+  const { url: signedUrl, isLoading, isError } = useDocumentUrl(url);
+
+  // The signature is refreshed while the sheet stays open, so a load that
+  // failed against an expired URL must not stay failed against the new one --
+  // otherwise the tile is stuck on "could not load" for the rest of the review.
+  useEffect(() => setFailed(false), [signedUrl]);
+
+  // Four states, and the reviewer has to be able to tell them apart: no
+  // document was ever uploaded, one exists and is being signed, one exists and
+  // could not be read, or one is ready. Collapsing the middle two into a
+  // broken-image icon is what made this panel unusable.
+  const showImage = Boolean(signedUrl) && !failed;
+  const message = !url
+    ? 'Not provided'
+    : isLoading
+      ? 'Loading…'
+      : isError
+        ? 'No access'
+        : 'Could not load';
 
   return (
     <figure className="space-y-2">
@@ -298,7 +315,7 @@ function Document({
       >
         {showImage ? (
           <a
-            href={url as string}
+            href={signedUrl as string}
             target="_blank"
             rel="noreferrer"
             className="group block size-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -308,7 +325,7 @@ function Document({
                 through this server's image optimizer would cache them on the
                 panel's own infrastructure. */}
             <Image
-              src={url as string}
+              src={signedUrl as string}
               alt={label}
               fill
               unoptimized
@@ -320,7 +337,7 @@ function Document({
         ) : (
           <div className="grid size-full place-items-center px-3 text-center">
             <span className="text-[11.5px] leading-snug text-muted-foreground">
-              {url ? 'Could not load' : 'Not provided'}
+              {message}
             </span>
           </div>
         )}
