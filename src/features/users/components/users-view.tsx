@@ -6,13 +6,15 @@ import { USER_ROLES, type UserRole, type UserRow } from '@/apikit/users';
 import { SearchIcon, UsersIcon } from '@/components/icons';
 import { ErrorState } from '@/components/shared/error-state';
 import { TableSkeleton } from '@/components/shared/table-skeleton';
+import { UserAvatar } from '@/components/shared/user-avatar';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useTableParams } from '@/hooks/use-table-params';
 import { cn } from '@/lib/utils';
 
 import { useSuspendUser, useUser, useUsers } from '../hooks/use-users';
 import { SuspendDialog } from '../modals/suspend-dialog';
-import { formatDate, initials, roleLabel, trustBand } from '../utils';
+import { formatDate, roleLabel, trustBand } from '../utils';
 
 import { UserDetailSheet } from './user-detail-sheet';
 
@@ -103,13 +105,13 @@ export function UsersView() {
           className="relative"
         >
           <SearchIcon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <input
+          <Input
             type="search"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder="Name or email"
             aria-label="Search users"
-            className="h-9 w-64 rounded-xl border border-border bg-card pl-9 pr-3 text-[13px] text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="w-64 pl-9"
           />
         </form>
 
@@ -181,9 +183,7 @@ export function UsersView() {
                     user.isSuspended ? 'border-destructive/40' : 'border-border',
                   )}
                 >
-                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary-wash text-[13px] font-semibold text-primary">
-                    {initials(user.name)}
-                  </span>
+                  <UserAvatar name={user.name} size="lg" />
 
                   <span className="min-w-0 flex-1">
                     <span className="flex items-center gap-2">

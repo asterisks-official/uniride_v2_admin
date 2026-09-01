@@ -26,7 +26,11 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env*.local
+
+# HugeIcons Pro registry auth token — never committed
+.npmrc
 
 # vercel
 .vercel
@@ -34,3 +38,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# reference-only, read-only source from a prior project — never committed here
+oldProject/
+Claude Prompt - Reuse and Rename Shared Components.md

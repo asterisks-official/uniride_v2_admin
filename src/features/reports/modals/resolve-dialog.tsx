@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 import { typeLabel } from '../utils';
 
@@ -73,7 +74,7 @@ export function ResolveDialog({
           <Label htmlFor="resolve-note">
             Note <span className="text-muted-foreground">(optional)</span>
           </Label>
-          <textarea
+          <Textarea
             id="resolve-note"
             value={note}
             maxLength={MAX_NOTE}
@@ -84,7 +85,7 @@ export function ResolveDialog({
                 ? 'What was done about it?'
                 : 'Why was this not upheld?'
             }
-            className="w-full resize-none rounded-lg border border-border bg-card px-3 py-2 text-[13.5px] text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="resize-none bg-card text-[13.5px]"
           />
           <p className="text-[12px] text-muted-foreground">
             Recorded against the report and visible to other admins.{' '}

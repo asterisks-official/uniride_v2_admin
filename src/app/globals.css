@@ -48,6 +48,10 @@
     --input: 154 11% 88%;
     --ring: 155 83% 26%;
     --radius: 0.625rem;
+    /* Referenced directly (not through Tailwind's borderRadius.md) by a few
+       shadcn-generated components' arbitrary-value classes. Kept identical to
+       tailwind.config.ts's `md` token so the two never drift apart. */
+    --radius-md: calc(var(--radius) - 2px);
   }
 }
 

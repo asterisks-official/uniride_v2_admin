@@ -44,14 +44,15 @@ unanswered: rewrite, mark superseded, or keep as product intent?
 
 ## Tech debt
 
-### D1 · HugeIcons **free** set, not Pro
+### D1 · HugeIcons free set, not Pro — resolved
 
-Per your answer to Q1. The Pro registry token was not available, so
-`src/components/icons/index.tsx` imports `@hugeicons/core-free-icons`. That file
-exists precisely so the swap is one import block — no call site changes. When the
-token arrives: add `.npmrc` reading it from env, install
-`@hugeicons-pro/core-stroke-rounded`, change the import, run
-`npx tsc --noEmit` to catch any name that differs between the sets.
+The Pro registry token arrived. `src/components/icons/index.tsx` now imports
+`@hugeicons-pro/core-stroke-rounded`; the free set is uninstalled. All 30 glyph
+names in the barrel carried over unchanged (verified against the package's own
+type declarations, not assumed). `.npmrc` holds the registry token directly —
+gitignored, since this project's `npm install`/`npm run dev` don't load `.env`
+before install, so there was no clean way to source it from there instead;
+`.npmrc.example` is committed as the template for a new machine.
 
 ### D2 · shadcn primitives are generated React-19 style, on a React-18 project
 
@@ -111,11 +112,10 @@ from the CDN, not turning the optimizer on.
 
 ## Open questions
 
-### Q3 · Icon style variant — assumed, not confirmed
+### Q3 · Icon style variant — resolved
 
-Unanswered, so I used my recommendation: **stroke-rounded** equivalents from the
-free set, which read best at 16–20px in dense tables. Changing it is one import
-block.
+Stroke-rounded, carried over unchanged from the free-set recommendation now
+that D1 switched the barrel to HugeIcons Pro's `core-stroke-rounded`.
 
 ### Q4 · Does the panel need its own login long-term, or SSO?
 

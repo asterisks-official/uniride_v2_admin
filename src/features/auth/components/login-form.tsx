@@ -6,10 +6,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { SpinnerIcon } from '@/components/icons';
+import { LockIcon, MailIcon, SpinnerIcon } from '@/components/icons';
+import { BITInput } from '@/components/ui/bit-input';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 
 import { loginSchema, type LoginValues } from '../schemas/login.schema';
 
@@ -50,34 +49,24 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          autoComplete="email"
-          placeholder="you@uniride.app"
-          aria-invalid={Boolean(errors.email)}
-          {...register('email')}
-        />
-        {errors.email ? (
-          <p className="text-[12.5px] text-destructive">{errors.email.message}</p>
-        ) : null}
-      </div>
+      <BITInput
+        label="Email"
+        type="email"
+        autoComplete="email"
+        placeholder="you@uniride.app"
+        prefixIcon={<MailIcon className="size-[17px]" />}
+        error={errors.email?.message}
+        {...register('email')}
+      />
 
-      <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
-        <Input
-          id="password"
-          type="password"
-          autoComplete="current-password"
-          aria-invalid={Boolean(errors.password)}
-          {...register('password')}
-        />
-        {errors.password ? (
-          <p className="text-[12.5px] text-destructive">{errors.password.message}</p>
-        ) : null}
-      </div>
+      <BITInput
+        label="Password"
+        type="password"
+        autoComplete="current-password"
+        prefixIcon={<LockIcon className="size-[17px]" />}
+        error={errors.password?.message}
+        {...register('password')}
+      />
 
       {formError ? (
         <p

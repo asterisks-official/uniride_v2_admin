@@ -5,6 +5,7 @@ import {
   ArrowLeft01Icon,
   ArrowRight01Icon,
   ArrowUp01Icon,
+  Calendar01Icon,
   Cancel01Icon,
   CancelCircleIcon,
   Car01Icon,
@@ -18,13 +19,20 @@ import {
   ImageAdd01Icon,
   InformationCircleIcon,
   Loading03Icon,
+  LockKeyholeIcon,
   Logout01Icon,
+  Mail01Icon,
+  Menu01Icon,
+  MinusSignIcon,
   MoreHorizontalIcon,
   Search01Icon,
   Settings01Icon,
   Tick02Icon,
+  UnfoldMoreIcon,
   UserGroupIcon,
-} from '@hugeicons/core-free-icons';
+  ViewIcon,
+  ViewOffSlashIcon,
+} from '@hugeicons-pro/core-stroke-rounded';
 import { forwardRef, type SVGProps } from 'react';
 
 /**
@@ -72,6 +80,14 @@ export const SearchIcon = icon(Search01Icon, 'SearchIcon');
 export const FilterIcon = icon(FilterHorizontalIcon, 'FilterIcon');
 export const SpinnerIcon = icon(Loading03Icon, 'SpinnerIcon');
 export const SignOutIcon = icon(Logout01Icon, 'SignOutIcon');
+export const MenuIcon = icon(Menu01Icon, 'MenuIcon');
+export const ShowPasswordIcon = icon(ViewIcon, 'ShowPasswordIcon');
+export const HidePasswordIcon = icon(ViewOffSlashIcon, 'HidePasswordIcon');
+export const CalendarIcon = icon(Calendar01Icon, 'CalendarIcon');
+export const SelectExpandIcon = icon(UnfoldMoreIcon, 'SelectExpandIcon');
+export const SeparatorIcon = icon(MinusSignIcon, 'SeparatorIcon');
+export const MailIcon = icon(Mail01Icon, 'MailIcon');
+export const LockIcon = icon(LockKeyholeIcon, 'LockIcon');
 
 // ── Status ───────────────────────────────────────────────────────────────────
 export const SuccessIcon = icon(CheckmarkCircle02Icon, 'SuccessIcon');

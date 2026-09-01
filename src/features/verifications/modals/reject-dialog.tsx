@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 import { rejectSchema, type RejectValues } from '../schemas/reject.schema';
 import { attemptsLeft, isFinalRejection } from '../utils';
@@ -114,13 +115,13 @@ export function RejectDialog({
 
           <div className="space-y-2">
             <Label htmlFor="note">Reason</Label>
-            <textarea
+            <Textarea
               id="note"
               rows={4}
               autoFocus
               placeholder="e.g. The licence photo is too blurry to read the expiry date."
               aria-invalid={Boolean(errors.note)}
-              className="w-full rounded-lg border border-input bg-card px-3 py-2 text-[13.5px] outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+              className="bg-card text-[13.5px]"
               {...register('note')}
             />
             {errors.note ? (

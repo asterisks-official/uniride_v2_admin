@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 const MAX_REASON = 500;
 
@@ -64,14 +65,14 @@ export function SuspendDialog({
         {suspending ? (
           <div className="space-y-2">
             <Label htmlFor="suspend-reason">Reason</Label>
-            <textarea
+            <Textarea
               id="suspend-reason"
               value={reason}
               maxLength={MAX_REASON}
               onChange={(e) => setReason(e.target.value)}
               rows={3}
               placeholder="Why is this account being suspended?"
-              className="w-full resize-none rounded-lg border border-border bg-card px-3 py-2 text-[13.5px] text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="resize-none bg-card text-[13.5px]"
             />
             <p className="text-[12px] text-muted-foreground">
               Shown to the person when they try to sign in.{' '}

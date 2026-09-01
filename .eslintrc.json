@@ -20,6 +20,11 @@
             "allowTypeImports": true
           },
           {
+            "name": "@hugeicons-pro/core-stroke-rounded",
+            "message": "Import icons from '@/components/icons' so the set and variant stay swappable in one file.",
+            "allowTypeImports": true
+          },
+          {
             "name": "@hugeicons/react",
             "message": "Import icons from '@/components/icons' so the set and variant stay swappable in one file.",
             "allowTypeImports": true

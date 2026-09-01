@@ -3,6 +3,7 @@
 import type { UserDetail } from '@/apikit/users';
 import { SpinnerIcon } from '@/components/icons';
 import { Can } from '@/components/shared/can';
+import { UserAvatar } from '@/components/shared/user-avatar';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -13,7 +14,7 @@ import {
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 
-import { formatDate, initials, roleLabel, trustBand } from '../utils';
+import { formatDate, roleLabel, trustBand } from '../utils';
 
 /**
  * Everything known about one account, on the surface where it gets suspended.
@@ -49,9 +50,7 @@ export function UserDetailSheet({
           <>
             <SheetHeader className="border-b border-border px-6 pb-5 pt-6">
               <div className="flex items-start gap-4">
-                <span className="grid size-12 shrink-0 place-items-center rounded-full bg-primary-wash text-[15px] font-semibold text-primary">
-                  {initials(user.name)}
-                </span>
+                <UserAvatar name={user.name} size="lg" className="size-12 text-[15px]" />
                 <div className="min-w-0 flex-1">
                   <SheetTitle className="truncate text-[17px]">
                     {user.name}
