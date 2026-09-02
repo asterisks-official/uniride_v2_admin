@@ -13,6 +13,13 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-inter)', ...fontFamily.sans],
       },
+      transitionTimingFunction: {
+        // The one easing curve the landing page uses. Named rather than
+        // written inline at each call site: an arbitrary `ease-[cubic-bezier()]`
+        // value is ambiguous to Tailwind's parser (it warns), and three copies
+        // of the same magic numbers drift the moment one of them is tweaked.
+        smooth: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      },
       colors: {
         border: 'hsl(var(--border))',
         'primary-deep': 'hsl(var(--primary-deep))',

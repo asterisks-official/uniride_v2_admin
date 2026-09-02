@@ -65,3 +65,277 @@
     text-wrap: balance;
   }
 }
+
+/* ── Landing page motion ────────────────────────────────────────────────────
+   Scoped under .ur-landing so none of it can leak into the console, which is a
+   dense data UI where movement is noise rather than polish.
+
+   One easing curve throughout — a fast-out, settle-in cubic. Using a single
+   curve everywhere is most of what makes a page feel like one piece of
+   software; mixing eases is what makes motion feel bolted on. */
+@layer components {
+  .ur-landing {
+    scroll-behavior: smooth;
+  }
+
+  /* Scroll reveal. The hidden state is defined here rather than in the
+     component so that turning motion off (below) removes it entirely — content
+     must never be able to get stuck invisible. */
+  .ur-landing .ur-reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .ur-landing .ur-reveal[data-visible='true'] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* On-load entrance for the fold. Runs immediately, staggered by inline
+     animation-delay, with backwards fill so nothing flashes before its turn. */
+  .ur-landing .ur-rise {
+    animation: ur-rise 0.85s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  /* Ambient background washes. Very slow and very small — at 20s and a few
+     pixels of travel it reads as depth rather than as animation. */
+  .ur-landing .ur-float {
+    animation: ur-float 20s ease-in-out infinite;
+  }
+
+  .ur-landing .ur-gradient-text {
+    background: linear-gradient(
+      100deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--primary-deep)) 55%,
+      hsl(var(--primary)) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: ur-pan 9s ease-in-out infinite;
+  }
+
+  /* Range input, styled in both engines. The native control is the one element
+     that would otherwise announce which OS you are on. */
+  .ur-landing .ur-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 999px;
+    background: hsl(var(--border));
+    outline: none;
+  }
+  .ur-landing .ur-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 999px;
+    background: hsl(var(--primary));
+    border: 3px solid hsl(var(--card));
+    box-shadow: 0 1px 6px hsl(var(--primary) / 0.45);
+    cursor: grab;
+    transition:
+      transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.25s ease;
+  }
+  .ur-landing .ur-range::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: 0 2px 10px hsl(var(--primary) / 0.55);
+  }
+  .ur-landing .ur-range:active::-webkit-slider-thumb {
+    cursor: grabbing;
+    transform: scale(1.05);
+  }
+  .ur-landing .ur-range::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 999px;
+    background: hsl(var(--primary));
+    border: 3px solid hsl(var(--card));
+    box-shadow: 0 1px 6px hsl(var(--primary) / 0.45);
+    cursor: grab;
+  }
+  .ur-landing .ur-range:focus-visible {
+    box-shadow: 0 0 0 3px hsl(var(--ring) / 0.35);
+  }
+
+  /* Reading progress. Scaled on the compositor from a custom property the
+     scroll handler writes — no width animation, so it never triggers layout. */
+  .ur-progress {
+    transform: scaleX(var(--ur-progress, 0));
+    transition: transform 0.12s linear;
+  }
+
+  /* Pointer highlight. The gradient is painted on a pseudo-element so it sits
+     under the card's own content and cannot pick up its text colour. */
+  .ur-landing .ur-spotlight {
+    position: relative;
+    isolation: isolate;
+  }
+  .ur-landing .ur-spotlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    background: radial-gradient(
+      22rem circle at var(--ur-x, 50%) var(--ur-y, 50%),
+      hsl(var(--primary) / 0.09),
+      transparent 62%
+    );
+  }
+  .ur-landing .ur-spotlight:hover::before {
+    opacity: 1;
+  }
+
+  /* The route draws once on load, then the rider runs it on a loop. */
+  .ur-landing .ur-route-draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: ur-draw 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+  }
+  .ur-landing .ur-route-rider {
+    offset-path: path(
+      'M40 110 C 150 110, 170 40, 280 40 S 430 110, 530 78 S 650 40, 690 40'
+    );
+    offset-rotate: 0deg;
+    animation: ur-travel 5.5s cubic-bezier(0.5, 0, 0.5, 1) 2.4s infinite;
+    opacity: 0;
+  }
+  .ur-landing .ur-pin-pulse {
+    transform-origin: 690px 40px;
+    animation: ur-pulse 2.6s ease-out 2.4s infinite;
+  }
+
+  /* The minimum-fare line, when the floor starts biting mid-drag. */
+  .ur-landing .ur-line-in {
+    animation: ur-line-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@keyframes ur-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ur-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -26px, 0) scale(1.06);
+  }
+}
+
+@keyframes ur-pan {
+  0%,
+  100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+}
+
+@keyframes ur-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes ur-travel {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  8%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes ur-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  70%,
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+@keyframes ur-line-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Motion is decoration here, never information. Removing it must leave the page
+   fully readable, so the reveal's hidden state is cancelled outright rather
+   than merely shortened — a visitor with reduced motion on should never be able
+   to land on a section that stayed at opacity 0. */
+@media (prefers-reduced-motion: reduce) {
+  .ur-landing {
+    scroll-behavior: auto;
+  }
+  .ur-landing .ur-reveal,
+  .ur-landing .ur-reveal[data-visible='true'] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .ur-landing .ur-rise,
+  .ur-landing .ur-float,
+  .ur-landing .ur-gradient-text {
+    animation: none;
+  }
+  .ur-landing .ur-gradient-text {
+    color: hsl(var(--primary));
+  }
+
+  /* The route must still read as a finished route, so it is left fully drawn
+     rather than left at dashoffset 1 — which would show nothing at all. */
+  .ur-landing .ur-route-draw {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .ur-landing .ur-route-rider,
+  .ur-landing .ur-pin-pulse {
+    animation: none;
+    opacity: 0;
+  }
+  .ur-landing .ur-line-in {
+    animation: none;
+  }
+  .ur-landing .ur-spotlight::before {
+    display: none;
+  }
+  .ur-progress {
+    transition: none;
+  }
+}
