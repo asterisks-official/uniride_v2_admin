@@ -19,14 +19,42 @@ const PUBLIC_ROUTES = new Set(['/']);
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  const host = request.headers.get('host') ?? '';
+  // The purchased domain is split in two: the apex is the marketing site, the
+  // `admin.` subdomain is the console. Everything else — localhost, and the
+  // *.vercel.app preview hosts -- keeps serving both halves from one origin, so
+  // development and preview review do not need a second hostname.
+  const splitHost = host.endsWith('uniridebd.com');
+  const onConsole = host.startsWith('admin.');
+
+  if (splitHost && !onConsole) {
+    // The marketing host serves the landing page and nothing else. Keeping the
+    // console on its own origin is what makes the session cookie host-only: an
+    // XSS in a marketing component then has no origin from which to call /api
+    // as a signed-in admin. Worth the redirect, given what this panel renders.
+    if (pathname === '/') return NextResponse.next();
+    return NextResponse.redirect(
+      new URL(
+        `${pathname}${request.nextUrl.search}`,
+        'https://admin.uniridebd.com',
+      ),
+    );
+  }
+
   const token = await getToken({ req: request });
 
   const signedIn = Boolean(token) && token?.error !== 'RefreshFailed';
 
   if (PUBLIC_ROUTES.has(pathname)) {
-    // Deliberately shown to signed-in admins too. Bouncing them to the
-    // dashboard would make the company's own front page unreachable from the
-    // browser they work in all day.
+    // On the split domain the console host has no front page — the marketing
+    // host owns it — so an admin who lands here wants the dashboard. On a
+    // single-origin host it is still served, and deliberately to signed-in
+    // admins too: bouncing them would make the company's own front page
+    // unreachable from the browser they work in all day.
+    if (splitHost) {
+      return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
     return NextResponse.next();
   }
 
